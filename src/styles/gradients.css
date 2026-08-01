@@ -1,0 +1,53 @@
+/* Weather condition gradient themes - Apple weather widget inspired.
+   Applied via .theme-<key> on the card. Refined with extra gradient stops. */
+
+.card {
+  background: linear-gradient(160deg, #4a90e2 0%, #6fb1e8 100%);
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-clear-day {
+  background: linear-gradient(165deg, #2b7fd4 0%, #4aa3e8 45%, #8ec6f2 100%);
+}
+.theme-clear-night {
+  background: linear-gradient(165deg, #0b1a33 0%, #13284f 55%, #1f3e6f 100%);
+}
+.theme-partly-cloudy-day {
+  background: linear-gradient(165deg, #3a7fc4 0%, #5b9fd6 50%, #a4c9ec 100%);
+}
+.theme-partly-cloudy-night {
+  background: linear-gradient(165deg, #131c33 0%, #233052 55%, #36436e 100%);
+}
+.theme-cloudy-day {
+  background: linear-gradient(165deg, #6b7c92 0%, #8395a8 50%, #a6b6c7 100%);
+}
+.theme-cloudy-night {
+  background: linear-gradient(165deg, #2a3344 0%, #3a4659 55%, #4f5c70 100%);
+}
+.theme-fog {
+  background: linear-gradient(165deg, #97a3b1 0%, #b3bcc7 50%, #d0d7df 100%);
+}
+.theme-drizzle-day {
+  background: linear-gradient(165deg, #5a7088 0%, #6f8499 55%, #889db2 100%);
+}
+.theme-drizzle-night {
+  background: linear-gradient(165deg, #1f2a3a 0%, #2c3a4f 55%, #3c4b63 100%);
+}
+.theme-rain-day {
+  background: linear-gradient(165deg, #46566a 0%, #566580 50%, #6c7c95 100%);
+}
+.theme-rain-night {
+  background: linear-gradient(165deg, #161e2c 0%, #232d40 55%, #35415b 100%);
+}
+.theme-snow-day {
+  background: linear-gradient(165deg, #7e9bb5 0%, #a8bfd2 50%, #d4e2ee 100%);
+}
+.theme-snow-night {
+  background: linear-gradient(165deg, #2a3a52 0%, #3d5070 55%, #56698a 100%);
+}
+.theme-thunderstorm-day {
+  background: linear-gradient(165deg, #3a3550 0%, #4a4670 50%, #5c588c 100%);
+}
+.theme-thunderstorm-night {
+  background: linear-gradient(165deg, #1a1830 0%, #282545 55%, #3a375f 100%);
+}

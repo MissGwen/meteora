@@ -1,0 +1,23 @@
+[package]
+name = "weather-widget-tauri"
+version = "0.1.0"
+description = "Apple-style desktop weather widget"
+authors = ["you"]
+edition = "2021"
+
+[lib]
+name = "weather_widget_tauri_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+windows = { version = "0.58", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }
+tauri-plugin-autostart = "2"
+tauri-plugin-dialog = "2"
