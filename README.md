@@ -1,15 +1,15 @@
 # Meteora
 
-Apple-style desktop weather widget for Windows, pinned to the desktop. Built with **Tauri 2 + React + TypeScript + Rust**.
+Desktop weather widget for Windows, pinned to the desktop. Built with **Tauri 2 + React + TypeScript + Rust**.
 
-精仿苹果天气小组件，常驻 Windows 桌面底层显示。
+桌面天气小组件，常驻 Windows 桌面底层显示。
 
 ## Features
 
-- Apple-style weather card: condition-driven gradients, scene animations (sun glow / stars / drifting clouds / rain / snow), custom SVG icons
+- Weather card: condition-driven gradients, scene animations (sun glow / stars / drifting clouds / rain / snow), custom SVG icons
 - Pinned to desktop (always-on-bottom via Win32 `SetWindowPos`), stays behind other windows
-- Smooth native drag (`data-tauri-drag-region`), no system menu interference
-- Auto IP geolocation (Chinese names via Nominatim) + manual city search & switching
+- Smooth native drag (`startDragging()` JS API), no system menu interference
+- Windows system geolocation (GPS) with IP fallback (Chinese names via Nominatim) + manual city search & switching
 - Current temperature, condition, hi/lo, feels-like, humidity, wind
 - Hourly forecast (next 6 hours) + 3-day forecast
 - Day/night aware themes & icons
@@ -19,9 +19,9 @@ Apple-style desktop weather widget for Windows, pinned to the desktop. Built wit
 ## Tech Stack
 
 - **Tauri 2** (Rust backend) + **React + TypeScript** (frontend) + **Vite**
-- Open-Meteo (weather, no API key)
-- ip-api.com + Nominatim (geolocation)
-- `windows` crate (Win32 API for desktop pinning)
+- Open-Meteo (weather forecast + geocoding, no API key)
+- Windows Geolocation API + ip-api.com (location), Nominatim (reverse geocoding)
+- `windows` crate (Win32 API for desktop pinning + system geolocation)
 - `tauri-plugin-autostart`, `tauri-plugin-dialog`
 - Inter font (OFL 1.1)
 
@@ -63,10 +63,17 @@ use, subscribe to an Open-Meteo API plan.
 > observations, so the temperature may differ by 1-3° from phone apps that use
 > observational data.
 
-### ip-api.com & Nominatim
+### Open-Meteo Geocoding
 
-IP geolocation via [ip-api.com](https://ip-api.com/) (non-commercial) and
-reverse geocoding via [Nominatim](https://nominatim.openstreetmap.org/) (OSM).
+City search uses the [Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geocoding-api)
+under the same CC-BY 4.0 terms as the weather API.
+
+### Location & Reverse Geocoding
+
+Primary location via the Windows Geolocation API (system location services),
+falling back to IP geolocation via [ip-api.com](https://ip-api.com/) (non-commercial).
+Reverse geocoding (coordinates to Chinese place name) via
+[Nominatim](https://nominatim.openstreetmap.org/) (OSM).
 
 ## Fonts
 
