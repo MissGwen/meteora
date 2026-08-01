@@ -1,5 +1,10 @@
 use serde::{Deserialize, Serialize};
 
+#[cfg(target_os = "windows")]
+use windows::Devices::Geolocation::{Geolocator, PositionAccuracy, GeolocationAccessStatus};
+#[cfg(target_os = "windows")]
+use windows::Foundation::IAsyncOperation;
+
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IpLocation {
@@ -87,8 +92,51 @@ async fn reverse_geocode(lat: f64, lon: f64) -> Option<String> {
     }
 }
 
+#[cfg(target_os = "windows")]
+pub async fn system_locate() -> Option<(f64, f64)> {
+    let access = Geolocator::RequestAccessAsync().ok()?;
+    let status = tokio::time::timeout(std::time::Duration::from_secs(5), async {
+        access.get()
+    }).await.ok()?.ok()?;
+
+    if status != GeolocationAccessStatus::Allowed {
+        return None;
+    }
+
+    let locator = Geolocator::new().ok()?;
+    let _ = locator.SetDesiredAccuracy(PositionAccuracy::High);
+    let op: IAsyncOperation<_> = locator.GetGeopositionAsync().ok()?;
+
+    let pos = tokio::time::timeout(std::time::Duration::from_secs(10), async {
+        op.get()
+    }).await.ok()?.ok()?;
+
+    let coord = pos.Coordinate().ok()?;
+    let point = coord.Point().ok()?;
+    let position = point.Position().ok()?;
+    let lat = position.Latitude;
+    let lon = position.Longitude;
+    if lat.is_nan() || lon.is_nan() || (lat == 0.0 && lon == 0.0) {
+        return None;
+    }
+    Some((lat, lon))
+}
+
+#[cfg(not(target_os = "windows"))]
+pub async fn system_locate() -> Option<(f64, f64)> {
+    None
+}
+
 #[tauri::command]
-pub async fn ip_locate() -> Result<Option<IpLocation>, String> {
+pub async fn geolocate() -> Result<Option<IpLocation>, String> {
+    if let Some((lat, lon)) = system_locate().await {
+        let name = reverse_geocode(lat, lon).await.unwrap_or_else(|| "当前位置".to_string());
+        return Ok(Some(IpLocation { lat, lon, name }));
+    }
+    ip_locate_impl().await.map_err(|e| e.to_string())
+}
+
+async fn ip_locate_impl() -> Result<Option<IpLocation>, String> {
     let resp: IpApiResp = reqwest::get("http://ip-api.com/json/?fields=status,lat,lon,city&lang=zh-CN")
         .await
         .map_err(|e| e.to_string())?
@@ -111,6 +159,11 @@ pub async fn ip_locate() -> Result<Option<IpLocation>, String> {
         lon: resp.lon,
         name,
     }))
+}
+
+#[tauri::command]
+pub async fn ip_locate() -> Result<Option<IpLocation>, String> {
+    ip_locate_impl().await
 }
 
 #[tauri::command]

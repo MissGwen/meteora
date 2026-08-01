@@ -63,6 +63,7 @@ export const api = {
   fetchWeather: (lat: number, lon: number) =>
     invoke<WeatherData>('fetch_weather', { lat, lon }),
   ipLocate: () => invoke<IpLocation | null>('ip_locate'),
+  geolocate: () => invoke<IpLocation | null>('geolocate'),
   searchCity: (name: string) => invoke<CityEntry[]>('search_city', { name }),
   getConfig: () => invoke<WidgetConfig>('get_config'),
   addCity: (city: CityEntry) => invoke<WidgetConfig>('add_city', { city }),

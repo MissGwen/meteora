@@ -1,4 +1,4 @@
-# Weather Widget
+# Meteora
 
 Apple-style desktop weather widget for Windows, pinned to the desktop. Built with **Tauri 2 + React + TypeScript + Rust**.
 

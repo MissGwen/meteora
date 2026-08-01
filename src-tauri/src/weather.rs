@@ -89,7 +89,7 @@ pub async fn fetch_weather(lat: f64, lon: f64) -> Result<WeatherData, String> {
         .hourly
         .time
         .iter()
-        .position(|t| t == &resp.current.time)
+        .rposition(|t| t.as_str() <= resp.current.time.as_str())
         .unwrap_or(0);
     let end = (start + 7).min(resp.hourly.time.len());
     let mut hourly = Vec::with_capacity(end - start);

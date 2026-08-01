@@ -116,6 +116,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             weather::fetch_weather,
             geo::ip_locate,
+            geo::geolocate,
             geo::search_city,
             config::get_config,
             config::add_city,

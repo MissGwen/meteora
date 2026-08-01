@@ -77,7 +77,7 @@ export default function App() {
       if (found) {
         await loadWeather(found)
       } else {
-        const loc = await api.ipLocate()
+        const loc = await api.geolocate()
         if (loc) {
           await loadWeather({ id: 'auto', name: loc.name, lat: loc.lat, lon: loc.lon })
         } else {

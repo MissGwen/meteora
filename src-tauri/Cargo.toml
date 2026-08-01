@@ -1,12 +1,12 @@
 [package]
-name = "weather-widget-tauri"
+name = "meteora"
 version = "0.1.0"
 description = "Apple-style desktop weather widget"
 authors = ["you"]
 edition = "2021"
 
 [lib]
-name = "weather_widget_tauri_lib"
+name = "meteora_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
@@ -18,6 +18,6 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 reqwest = { version = "0.12", features = ["json"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
-windows = { version = "0.58", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }
+windows = { version = "0.58", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Devices_Geolocation", "Foundation", "Foundation_Collections"] }
 tauri-plugin-autostart = "2"
 tauri-plugin-dialog = "2"
